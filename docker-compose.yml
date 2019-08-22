@@ -1,0 +1,19 @@
+#Cuando ejecutamos los comandos:
+#make up
+#make start
+#docker-compose up
+#Hacemoc que docker-compose cargue y ejecute este archivo el cual levanta un contenedor con un UNIX Alpine y un httpd version 2.4
+#Para ver los datos del contenedor podemos ejecutar el comando "docker ps -a" el nombre del contenedor es "docker_compose_tutorial_alpine_httpd"
+
+version: '3.7'
+
+services:
+
+  httpd:
+    image: httpd:2.4-alpine
+    container_name: "docker_compose_tutorial_alpine_httpd"
+    working_dir: /usr/local/apache2/htdocs
+    volumes:
+      - ./public_html:/usr/local/apache2/htdocs:cached
+    ports:
+      - "80:80"
