@@ -1,19 +1,18 @@
-#Cuando ejecutamos los comandos:
-#make up
-#make start
-#docker-compose up
-#Hacemoc que docker-compose cargue y ejecute este archivo el cual levanta un contenedor con un UNIX Alpine y un httpd version 2.4
-#Para ver los datos del contenedor podemos ejecutar el comando "docker ps -a" el nombre del contenedor es "docker_compose_tutorial_alpine_httpd"
+#                                         https://docs.docker.com/compose/compose-file/
+# Cuando ejecutamos los comandos:
+# make | make up | make start | docker-compose up...
+# Hacemos que docker-compose cargue y ejecute este archivo el cual contiene los servicios que queremos desplegar en DIFERENTES contenedores
+# Para ver infomarción sobre los contenedor que tenemos actualmente podemos ejecutar el comando "docker ps -a"
 
 version: '3.7'
 
 services:
 
   httpd:
-    image: httpd:2.4-alpine
-    container_name: "docker_compose_tutorial_alpine_httpd"
+    image: httpd:2.4-alpine #Imagen base de la que partimos
+    container_name: "docker_compose_tutorial_alpine_httpd" # Cuando hagamos el docker-compose up se creara un contenedor y este sera su nombre
     working_dir: /usr/local/apache2/htdocs
-    volumes:
+    volumes: # Vinculacion de carpetas Carpeta_Real:Carpeta_Container
       - ./public_html:/usr/local/apache2/htdocs:cached
-    ports:
+    ports: #Mapeamos puertos Puerto_Real:Puerto_Container
       - "80:80"
