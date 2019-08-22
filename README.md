@@ -1,2 +1,3 @@
 # Docker-Compose-Tutorial
-A simple tutorial all documented with the basic to starts in the use of Docker
+Un repositorio para aprender a usar docker-compose y el fichero docker-compose.yml (QUE NO ES LO MISMO QUE DOCER Y EL FICHERO Dockerfile)
+
