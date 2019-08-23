@@ -1,0 +1,6 @@
+#                                         https://docs.docker.com/compose/compose-file/
+# Cuando ejecutamos los comandos:
+# make | make up | make start | docker-compose up...
+# Hacemos que docker-compose cargue y ejecute este archivo el cual contiene los servicios que queremos desplegar en DIFERENTES contenedores (Cada servicio tiene su contenedor)
+# Para ver infomarción sobre los contenedor que tenemos actualmente podemos ejecutar el comando "docker ps"
+# Para ver una lista sobre todos los contenedores que tenemos podemos ejecutar el comando "docker ps -a"
