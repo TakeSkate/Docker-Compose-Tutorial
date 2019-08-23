@@ -1,20 +1,25 @@
 #                                         https://docs.docker.com/compose/compose-file/
 # Cuando ejecutamos los comandos:
 # make | make up | make start | docker-compose up...
-# Hacemos que docker-compose cargue y ejecute este archivo el cual contiene los servicios que queremos desplegar en DIFERENTES contenedores
-# Para ver infomarción sobre los contenedor que tenemos actualmente podemos ejecutar el comando "docker ps -a"
+# Hacemos que docker-compose cargue y ejecute este archivo el cual contiene los servicios que queremos desplegar en DIFERENTES contenedores (Cada servicio tiene su contenedor)
+# Para ver infomarción sobre los contenedor que tenemos actualmente podemos ejecutar el comando "docker ps"
+# Para ver una lista sobre todos los contenedores que tenemos podemos ejecutar el comando "docker ps -a"
 
 version: '3.7'
 
 services:
 
+  #Nombre del servicio (Lo ponemos nosotros a nuestro gusto)
   httpd:
     image: httpd:2.4-alpine #Imagen base de la que partimos
-    container_name: "docker_compose_tutorial_alpine_httpd" # Cuando hagamos el docker-compose up se creara un contenedor y este sera su nombre
+    # Cuando hagamos el docker-compose up se creara un contenedor y este sera su nombre
+    container_name: "docker_compose_tutorial_alpine_httpd"
     working_dir: /usr/local/apache2/htdocs
-    volumes: # Vinculacion de carpetas Carpeta_Real:Carpeta_Container
+    volumes:
+      # Vinculacion de carpetas Carpeta_En_Equipo_Local:Carpeta_En_Container_Docker
       - ./public_html:/usr/local/apache2/htdocs:cached
-    ports: #Mapeamos puertos Puerto_Real:Puerto_Container
+    ports:
+      #Mapeamos puertos Puerto_En_Equipo_Local:Puerto_En_Container_Docker
       - "80:80"
 
 
@@ -25,14 +30,34 @@ services:
     environment:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mysql
     volumes:
-      - ./Databases:/var/lib/mysql #Con este volumen hacemos persistentes los datos que insertemos en la BD
+      - ./Databases:/var/lib/mysql # Con este volumen hacemos persistentes los datos que insertemos en la BD
     restart: always
     ports:
       - "3306:3306"
 
+  # Adminer es un servicio que levanta una web a la cual podemos acceder mediante la url:  localhost:8081
+  # Esta web es similar a phpmyadmin, es decir podemos navegar por nuestra base de datos y ver las tablas etc
+  # Para acceder a nuestro servicio mysql desde adminer es necesario seguir las siguientes instrucciones
+  # 1º - Levantar los servicios con alguno de los siguientes comandos: docker-compose up | docker-compose up -d | make | make up | make start
+  # 2º - Abrir nuestro navegador e ir a la web http://localhost:8081
+  # 3º - Rellenar el formulario de login de la siguiente menera:
+  # Motor de base de datos : MySQL
+  # Servidor: mysql
+  # Usuario: root
+  # Contraseña: secret
+  # Base de datos: mysql
+  # 4º - Hacemos login y comprobamos que el servicio funciona correctamente
   adminer:
     image: adminer:latest
     restart: always
     ports:
-      - 8080:8080
+      - 8081:8080
+
+# Actualmente deberiamos tener 3 servicios corriendo a simultaneamente
+# 1º HTTPD: corriendo en -> http://localhost/
+# 2º MYSQL: Nuestra base de datos mysql a la cual podemos acceder mediante algun cliente mysql o haciendo uso del servicio adminer
+# 3º ADMINER: corriendo en -> http://localhost:8081
+# Debemos probar y asegurarnos que los contenedores funcionan correctamente y que entendemos la mayoria de las lineas de este fichero docker-compose
+
