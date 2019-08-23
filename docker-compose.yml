@@ -16,3 +16,18 @@ services:
       - ./public_html:/usr/local/apache2/htdocs:cached
     ports: #Mapeamos puertos Puerto_Real:Puerto_Container
       - "80:80"
+
+
+  mysql:
+    image: mysql:5.7
+    container_name: "docker_compose_tutorial_mysql-5.7"
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./Databases:/var/lib/mysql #Con este volumen hacemos persistentes los datos que insertemos en la BD
+    restart: always
+    ports:
+      - "3306:3306"
+
